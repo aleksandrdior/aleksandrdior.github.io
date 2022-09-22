@@ -18,7 +18,8 @@
 						c = c + 1;
 					}
 				}
-				alert(y + " содержит Быков = " + String(b) + " Коров = " + String(c-b));
+				oldText = document.querySelector('#result1').outerHTML
+				document.querySelector('#result1').outerHTML  =oldText + '<br>' +y + " содержит Быков = " + String(b) + " Коров = " + String(c-b);
 				form.game.value = '';
 				return false;
 			}
@@ -28,5 +29,8 @@
 		<form method="POST" action="" onsubmit="return play(this)">
 			<input name="game" value="">
 		</form>
+		<div id="result1">
+			Результаты:
+		</div>
 	</body>
 </html>
