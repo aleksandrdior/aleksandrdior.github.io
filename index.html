@@ -19,7 +19,7 @@
 					}
 				}
 				oldText = document.querySelector('#result1').outerHTML;
-				document.querySelector('#result1').outerHTML  =oldText + '<br>' +y + " содержит Быков = " + String(b) + " Коров = " + String(c-b);
+				document.querySelector('#result1').outerHTML  =oldText + '<br>' + y + " содержит " + String(b) + " Быков и " + String(c-b) + " Коров";
 				form.game.value = '';
 				return false;
 			}
