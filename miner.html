@@ -44,12 +44,6 @@
 					for(n=0; n<rowCol; n++){
 						ctx.strokeRect(n*18+1, m*18+1, 15, 15);
 				}}
-				for(i=0; i<rowCol*rowCol; i++){
-					if(playArea[i]==1){
-						row = parseInt(i/rowCol);
-						col = i - row*rowCol;
-					}
-				}
 				txt.value = "0 / " + parseInt(celMinusMines);
 			}
 			function play(event){
