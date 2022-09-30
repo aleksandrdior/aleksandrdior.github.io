@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<style>
+			body {
+				text-align:center
+			}
+			#txt {
+				width: 80;
+				text-align: center;
+			}
+		</style>
+		<script>
+			mine = new Image();
+			mine.src = "mine.png";
+			flag = new Image();
+			flag.src = "flag.png";
+			rowCol = 20;
+			delta = 6;
+			celMinusMines = parseInt(rowCol*rowCol/delta*(delta-1));
+			found = 0;
+			playArea = [];
+			gameOwer = 0;
+			for(i=0; i<rowCol*rowCol; i++){
+				playArea[i] = 0;
+				if(i/6 - parseInt(i/6) == 0){
+					playArea[i] = 1;
+				}
+			}
+			playArea.sort(()=>Math.random()-0.5);
+			window.onload = function dr(){
+				txt = document.getElementById('txt');
+				btnFlag = document.getElementById('flag');
+				cnvs = document.getElementById('cnvs');
+				cnvs.width = rowCol*18;
+				cnvs.height = rowCol*18;
+				ctx = cnvs.getContext('2d');
+				cnvs.addEventListener("mousedown", play, false);
+
+				ctx.strokeStyle = 'green';
+				ctx.fillStyle = 'darkKhaki';
+				ctx.textAlign = 'center';
+				ctx.font = '10px sans-serif';
+				for(m=0; m<rowCol; m++){
+					for(n=0; n<rowCol; n++){
+						ctx.strokeRect(n*18+1, m*18+1, 15, 15);
+				}}
+				for(i=0; i<rowCol*rowCol; i++){
+					if(playArea[i]==1){
+						row = parseInt(i/rowCol);
+						col = i - row*rowCol;
+					}
+				}
+				txt.value = "0 / " + parseInt(celMinusMines);
+			}
+			function play(event){
+				if(gameOwer == 1){
+					alert('Game Ower!');
+					return;
+				}
+				quantity = 0
+				mouseX = event.x-event.target.offsetLeft;
+				mouseY = event.y-event.target.offsetTop;
+				cell = parseInt(mouseY / 18) * rowCol + parseInt(mouseX / 18);
+				row = parseInt(cell/rowCol);         // Строка
+				col = cell - row*rowCol;             // Колонка
+				if(btnFlag.checked){
+					ctx.drawImage(flag, col*18+2, row*18+2);
+					return;
+				}
+				if(playArea[cell] == 1){
+					ctx.clearRect(col*18+2, row*18+2, 13, 13);
+					ctx.drawImage(mine, col*18-2, row*18-3);
+					gameOwer = 1;
+					return;
+				}
+				found += 1;
+				txt.value = found + " / " + parseInt(celMinusMines);
+				if(col>0){quantity += playArea[cell-1];}
+				if(col<(rowCol-1)){quantity += playArea[cell+1];}
+				if(row>0){quantity += playArea[cell-rowCol];}
+				if(row>0 && col>0){quantity += playArea[cell-rowCol-1];}
+				if(row>0 && col<(rowCol-1)){quantity += playArea[cell-rowCol+1];}
+				if(row<(rowCol-1)){quantity += playArea[cell+rowCol];}
+				if(row<(rowCol-1) && col>0){quantity += playArea[cell+rowCol-1];}
+				if(row<(rowCol-1) && col<(rowCol-1)){quantity += playArea[cell+rowCol+1];}
+				ctx.clearRect(col*18+2, row*18+2, 13, 13);
+				ctx.strokeStyle = 'black';
+				ctx.strokeText(quantity, col*18+8, row*18+13);
+				if(quantity==0){
+					ctx.fillRect(col*18+2, row*18+2, 13, 13);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id="cnvs"></canvas>
+		<form>
+			Ход
+			<input type=radio name=btn checked>
+			<input type=radio name=btn id="flag">
+			Флаг | Сделано/из
+			<input id=txt value="0 / ">
+		</form>
+	</body>
+</html>
