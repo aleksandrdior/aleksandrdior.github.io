@@ -4,85 +4,91 @@
 			body {
 				text-align:center
 			}
-			#txt {
-				width: 80;
-				text-align: center;
-			}
 		</style>
 		<script>
 			mine = new Image();
 			mine.src = "mine.png";
-			flag = new Image();
-			flag.src = "flag.png";
+			gameOwer = false;
 			rowCol = 20;
+			size = 28;
 			delta = 6;
-			celMinusMines = parseInt(rowCol*rowCol/delta*(delta-1));
-			found = 0;
 			playArea = [];
-			gameOwer = 0;
-			for(i=0; i<rowCol*rowCol; i++){
+			for(i=0; i<rowCol**2; i++){
 				playArea[i] = 0;
 				if(i/6 - parseInt(i/6) == 0){
 					playArea[i] = 1;
 				}
 			}
 			playArea.sort(()=>Math.random()-0.5);
-			window.onload = function dr(){
-				txt = document.getElementById('txt');
-				btnFlag = document.getElementById('flag');
-				cnvs = document.getElementById('cnvs');
-				cnvs.width = rowCol*18;
-				cnvs.height = rowCol*18;
-				ctx = cnvs.getContext('2d');
-				cnvs.addEventListener("mousedown", play, false);
-
-				ctx.strokeStyle = 'green';
+			function row(n){
+				return parseInt(n / rowCol);
+			}
+			function col(n){
+				return n % rowCol;
+			}
+			function prn(txt, n){
+				ctx.clearRect(col(n)*size+2, row(n)*size+2, size-5, size-5);
+				ctx.strokeStyle = 'black';
+				ctx.fillStyle = 'black';
+				ctx.fillText(txt, col(n)*size+size/2, row(n)*size+size-5);
+				if(size>24){
+					ctx.strokeText(txt, col(n)*size+size/2, row(n)*size+size-5);
+				}
+			}
+			function quantity(n){
+				quant = 0;
+				if(col(n)>0){quant += playArea[n-1];}
+				if(col(n)<(rowCol-1)){quant += playArea[n+1];}
+				if(row(n)>0){quant += playArea[n-rowCol];}
+				if(row(n)>0 && col(n)>0){quant += playArea[n-rowCol-1];}
+				if(row(n)>0 && col(n)<(rowCol-1)){quant += playArea[n-rowCol+1];}
+				if(row(n)<(rowCol-1)){quant += playArea[n+rowCol];}
+				if(row(n)<(rowCol-1) && col(n)>0){quant += playArea[n+rowCol-1];}
+				if(row(n)<(rowCol-1) && col(n)<(rowCol-1)){quant += playArea[n+rowCol+1];}
+				return quant;
+			}
+			function filler(n){
 				ctx.fillStyle = 'darkKhaki';
-				ctx.textAlign = 'center';
-				ctx.font = '10px sans-serif';
-				for(m=0; m<rowCol; m++){
-					for(n=0; n<rowCol; n++){
-						ctx.strokeRect(n*18+1, m*18+1, 15, 15);
-				}}
-				txt.value = "0 / " + parseInt(celMinusMines);
+				ctx.fillRect(col(n)*size+2, row(n)*size+2, size-5, size-5);
 			}
 			function play(event){
-				if(gameOwer == 1){
+				if(gameOwer){
 					alert('Game Ower!');
 					return;
 				}
-				quantity = 0
 				mouseX = event.x-event.target.offsetLeft;
 				mouseY = event.y-event.target.offsetTop;
-				cell = parseInt(mouseY / 18) * rowCol + parseInt(mouseX / 18);
-				row = parseInt(cell/rowCol);         // Строка
-				col = cell - row*rowCol;             // Колонка
+				cell = parseInt(mouseY / size) * rowCol + parseInt(mouseX / size);
 				if(btnFlag.checked){
-					ctx.drawImage(flag, col*18+2, row*18+2);
+					prn("🚩", cell);
 					return;
 				}
 				if(playArea[cell] == 1){
-					ctx.clearRect(col*18+2, row*18+2, 13, 13);
-					ctx.drawImage(mine, col*18-2, row*18-3);
-					gameOwer = 1;
+					ctx.clearRect(col(cell)*size+2, row(cell)*size+2, size-5, size-5);
+					ctx.textAlign = '';
+					ctx.drawImage(mine, col(cell)*size, row(cell)*size-1, size, size);
+					gameOwer = true;
 					return;
 				}
-				found += 1;
-				txt.value = found + " / " + parseInt(celMinusMines);
-				if(col>0){quantity += playArea[cell-1];}
-				if(col<(rowCol-1)){quantity += playArea[cell+1];}
-				if(row>0){quantity += playArea[cell-rowCol];}
-				if(row>0 && col>0){quantity += playArea[cell-rowCol-1];}
-				if(row>0 && col<(rowCol-1)){quantity += playArea[cell-rowCol+1];}
-				if(row<(rowCol-1)){quantity += playArea[cell+rowCol];}
-				if(row<(rowCol-1) && col>0){quantity += playArea[cell+rowCol-1];}
-				if(row<(rowCol-1) && col<(rowCol-1)){quantity += playArea[cell+rowCol+1];}
-				ctx.clearRect(col*18+2, row*18+2, 13, 13);
-				ctx.strokeStyle = 'black';
-				ctx.strokeText(quantity, col*18+8, row*18+13);
-				if(quantity==0){
-					ctx.fillRect(col*18+2, row*18+2, 13, 13);
+				prn(quantity(cell), cell);
+				if(quantity(cell) == 0){
+					filler(cell);
 				}
+			}
+			window.onload = function draw(){
+				btnFlag = document.getElementById('flag');
+				cnvs = document.getElementById('cnvs');
+				cnvs.width = rowCol*size;
+				cnvs.height = rowCol*size;
+				cnvs.addEventListener("mousedown", play, false);
+				ctx = cnvs.getContext('2d');
+				ctx.strokeStyle = 'green';
+				ctx.textAlign = 'center';
+				ctx.font = (size-4)+'px sans-serif';
+				for(m=0; m<rowCol; m++){
+					for(n=0; n<rowCol; n++){
+						ctx.strokeRect(n*size+1, m*size+1, size-3, size-3);
+				}}
 			}
 		</script>
 	</head>
@@ -92,8 +98,7 @@
 			Ход
 			<input type=radio name=btn checked>
 			<input type=radio name=btn id="flag">
-			Флаг | Сделано/из
-			<input id=txt value="0 / ">
+			Флаг
 		</form>
 	</body>
 </html>
