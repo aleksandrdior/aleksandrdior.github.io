@@ -81,6 +81,9 @@
 				mouseX = event.x-event.target.offsetLeft;
 				mouseY = event.y-event.target.offsetTop;
 				cell = parseInt(mouseY / size) * rowCol + parseInt(mouseX / size);
+				if(matrix[cell] == 1){
+					return;
+				}
 				if(btnFlag.checked){
 					if(flags[cell] == 0){
 					prn("🚩", cell);
