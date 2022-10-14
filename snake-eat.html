@@ -19,6 +19,26 @@
     </style>
   </head>
   <body>
-    
+    <script>
+    ["Г", "Д", "Е", "Е", "С", "Т", "Ж", "У", ""].forEach((e) => {
+      let el = document.createElement("pre")
+      el.innerHTML = e
+      el.onclick = function() {click(this)}
+      document.body.appendChild(el)
+    });
+    function click(e) {
+      if(/*Math.floor(spaceID()/3) == Math.floor(childID(e)/3 || spaceID()%3 == childID(e)%3) &&*/(Math.abs(spaceID() - childID(e)) == 1 || Math.abs(spaceID() - childID(e)) == 3)) {
+        e.innerHTML = [document.body.children[spaceID()].innerHTML, document.body.children[spaceID()].innerHTML = e.innerHTML][0];
+      }
+    }
+    function childID(e) {
+      return Array.from(document.body.children).indexOf(e)
+    }
+    function spaceID() {
+      let k
+      Array.from(document.body.children).forEach((e, i) => {if(e.innerHTML == "") k = i})
+      return k
+    }
+  </script>
   </body>
 </html>
