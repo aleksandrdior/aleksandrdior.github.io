@@ -1,25 +1,28 @@
-<html>
-  <head>
-    <style>
-      body {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        margin: 0;
-        user-select: none;
-      }
-      pre {
-        border: 2px solid;
-        font-size: 10vw;
-        text-align: center;
-        padding-top: 2vw;
-      }
-      pre:active {
-        color: green;
-      }
-    </style>
-  </head>
-  <body>
-    <script>
+
+<head>
+  <title>Где Ест Уж</title>
+  <style>
+    body {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: 0;
+      user-select: none;
+    }
+    pre {
+      border: 2px solid;
+      font-size: 10vw;
+      margin: 0;
+      text-align: center;
+      padding-top: 2vw;
+    }
+    pre:active {
+      color: green;
+    }
+  </style>
+
+</head>
+<body>
+  <script>
     ["Г", "Д", "Е", "Е", "С", "Т", "Ж", "У", ""].forEach((e) => {
       let el = document.createElement("pre")
       el.innerHTML = e
@@ -40,5 +43,4 @@
       return k
     }
   </script>
-  </body>
-</html>
+</body>
