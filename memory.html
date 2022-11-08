@@ -23,6 +23,9 @@
 			m = 0;
 			function play(B){
 				n = btn.indexOf(B);
+				if (btn[n].value != " "){
+					return
+				}
 				B.value = letter[n];
 				if (fix){
 					fix = false;
