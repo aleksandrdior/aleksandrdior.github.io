@@ -3,7 +3,7 @@
 		<style>
     			#puzzle {
 				display: inline-grid;
-				grid-template-columns: repeat(3, 1fr);
+				grid-template-columns: repeat(8, 1fr);
 				padding: 30vw;
 				padding-top: 10px;
 			}
@@ -16,8 +16,8 @@
 			}
 		</style>
 		<script>
-			letter = ["Г", "Д", "Е", "Е", "С", "Т", "Ж", "У", " "];
-			btn = new Array(9);
+			letter = ["Q","W","E","R","T","Y","U","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M"]*2;
+			btn = new Array(48);
 			function play(B){
 				n = btn.indexOf(B);
 				m = letter.indexOf(' ');
@@ -36,7 +36,7 @@
 		<div id=puzzle>
 		</div>
 		<script>
-			for(i=0; i<9; i++){
+			for(i=0; i<48; i++){
 				btn[i] = document.createElement("input");
 				btn[i].type = "button";
 				btn[i].value = letter[i];
