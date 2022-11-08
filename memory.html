@@ -4,8 +4,7 @@
     			#puzzle {
 				display: inline-grid;
 				grid-template-columns: repeat(8, 1fr);
-				padding: 30vw;
-				padding-top: 10px;
+				padding: 10vw;
 			}
 			input {
 				width: 10vw;
@@ -16,19 +15,25 @@
 			}
 		</style>
 		<script>
-			letter = ["Q","W","E","R","T","Y","U","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M"]*2;
+			s = "QWERTYUPASDFGHJKLZXCVBNM"
+			letter = Array.from(s+s);
+			letter.sort(()=>Math.random()-0.5);
 			btn = new Array(48);
+			fix = true;
+			m = 0;
 			function play(B){
 				n = btn.indexOf(B);
-				m = letter.indexOf(' ');
-				if ((n-m)**2 == 9 || ((m-n)**2 == 1 && (n-n%3)/3 == (m-m%3)/3)){
-					btn[n].value = " ";
-					btn[m].value = letter[n];
-					letter[m] = letter[n];
-					letter[n] = " ";
-					if(letter.join("") == "ГДЕЕСТУЖ "){
-						setTimeout(() => {alert("ПОБЕДА!");}, 100);
-				}}
+				B.value = letter[n];
+				if (fix){
+					fix = false;
+				}
+				else if (letter[n] == letter[m]){
+					fix = true;
+				}
+				else {
+					btn[m].value = " ";
+				}
+				m = n;
 			}
 		</script>
 	</head>
@@ -39,7 +44,7 @@
 			for(i=0; i<48; i++){
 				btn[i] = document.createElement("input");
 				btn[i].type = "button";
-				btn[i].value = letter[i];
+				btn[i].value = " ";
 				btn[i].onclick = function() {play(this)};
 				document.getElementById('puzzle').appendChild(btn[i]);
 			}
