@@ -1,1 +1,60 @@
-
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+    			#puzzle {
+				display: inline-grid;
+				grid-template-columns: repeat(8, 1fr);
+				padding: 15vw;
+				padding-top: 15px;
+			}
+			input {
+				width: 8vw;
+				height: 8vw;
+				margin: 1px;
+				text-align: center;
+				font-size: 5vw;
+				animation-duration: 5s;
+				border-radius: 15px;
+			}
+		</style>
+		<script>
+			s = "🎭🥎🏀🐞🦈🦞🐊🦊🐼🦓🐫🐒🐧🐓🦆🦋🌺🎻🎲🎨🎃🌍🚆🚙"
+			letter = Array.from(s+s);
+			letter.sort(()=>Math.random()-0.5);
+			btn = new Array(48);
+			fix = true;
+			m = 0;
+			function play(B){
+				n = btn.indexOf(B);
+				if (btn[n].value != " "){
+					return
+				}
+				B.value = letter[n];
+				if (fix){
+					fix = false;
+				}
+				else if (letter[n] == letter[m]){
+					fix = true;
+				}
+				else {
+					btn[m].value = " ";
+				}
+				m = n;
+			}
+		</script>
+	</head>
+	<body>
+		<div id=puzzle>
+		</div>
+		<script>
+			for(i=0; i<48; i++){
+				btn[i] = document.createElement("input");
+				btn[i].type = "button";
+				btn[i].value = " ";
+				btn[i].onclick = function() {play(this)};
+				document.getElementById('puzzle').appendChild(btn[i]);
+			}
+		</script>
+	</body>
+</html>
