@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <style>
+                #puzzle {
+                display: inline-grid;
+                grid-template-columns: repeat(10, 1fr);
+                padding: 5vw;
+                padding-top: 10px;
+            }
+            input {
+                width: 4vw;
+                height: 4vw;
+                margin: 1px;
+                text-align: center;
+                font-size: 3.6vw;
+            }
+            #free {
+                color: cyan;
+                background-color: beige;
+            }
+            form{
+                padding-left: 20vw;
+            }
+        </style>
+        <script>
+            numberOfButtons = 100;
+            columns = 10;
+            btn = new Array(numberOfButtons);
+            playArea = Array(numberOfButtons);
+            mines = 20;
+            for(i=0; i<numberOfButtons; i++){
+                playArea[i] = i<mines? 1 : 0;
+            }
+            playArea.sort(()=>Math.random()-0.5);
+            function play(B){
+                n = btn.indexOf(B);
+                if(btnFlag.checked){
+                    if(btn[n].value == "🚩"){
+                        btn[n].value = " ";
+                    }
+                    else if(btn[n].value == " "){
+                        btn[n].value = "🚩";
+                    }
+                    return
+                }
+                if(playArea[n]){
+                    btn[n].value = "M";
+                    setTimeout(() => {
+                        if(window.confirm("Вы проиграли.\nСыграем ещё?")){
+                            btn.forEach((b) => {
+                                b.value = " ";
+                                b.id = "";
+                            });
+                            playArea.sort(()=>Math.random()-0.5);
+                        }
+                    }, 200);
+                    return
+                }
+                m = 0;
+                for(i of [n-columns, n, n+columns]){
+                    for(j of [-1, 0, 1]){
+                        if(i+j>=0 & i+j<numberOfButtons){
+                            if(i-i%columns == i+j-(i+j)%columns){
+                                m += playArea[i+j];
+                            }
+                        }
+                    }
+                }
+                btn[n].value = m;
+                if(m == 0){
+                    btn[n].id = "free";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id=puzzle>
+        </div>
+        <form>
+            Ход
+            <input type=radio name=group1 checked>
+            <input type=radio name=group1 id="flag">
+            Флаг
+        </form>
+        <script>
+            btnFlag = document.getElementById('flag');
+            for(i=0; i<numberOfButtons; i++){
+                btn[i] = document.createElement("input");
+                btn[i].type = "button";
+                btn[i].value = " ";
+                btn[i].onclick = function() {play(this)};
+                document.getElementById('puzzle').appendChild(btn[i]);
+            }
+        </script>
+    </body>
+</html>
