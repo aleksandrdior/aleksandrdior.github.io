@@ -5,3 +5,4 @@ JavaScript Games <br>
 Игра Быки и коровы online https://aleksandrdior.github.io/index.html <br>
 Игра Сапёр online https://aleksandrdior.github.io/miner.html <br>
 Игра Память online https://aleksandrdior.github.io/mem.html <br>
+Игра Память v2 online https://aleksandrdior.github.io/memory.html <br>
