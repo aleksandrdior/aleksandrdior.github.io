@@ -4,3 +4,4 @@ JavaScript Games <br>
 Игра Flip-Flop online https://aleksandrdior.github.io/flip-flop.html <br>
 Игра Быки и коровы online https://aleksandrdior.github.io/index.html <br>
 Игра Сапёр online https://aleksandrdior.github.io/miner.html <br>
+Игра Память online https://aleksandrdior.github.io/memory.html <br>
